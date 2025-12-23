@@ -36,7 +36,18 @@
 
   <script>
     const tg = window.Telegram.WebApp;
-    tg.ready();
+  tg.ready();
+
+  const user = tg.initDataUnsafe?.user;
+
+  if (user) {
+    document.querySelector(".value").innerText =
+      "User ID: " + user.id;
+  } else {
+    document.querySelector(".value").innerText =
+      "No user data";
+  }
+</script>
 
     // Пока просто заглушка
     document.querySelector(".value").innerText = "+12 430 USDT";
