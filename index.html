@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>MISSED — Financial Awareness</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+
+/* =========================================================
+   DESIGN SYSTEM — FUTURE FINANCE
+   ========================================================= */
+
+:root {
+  --bg-light: #f6f7f9;
+  --bg-dark: #0c0e12;
+
+  --surface-light: #ffffff;
+  --surface-dark: rgba(255,255,255,0.06);
+
+  --text-light: #0b0b0c;
+  --text-dark: #ffffff;
+
+  --muted-light: rgba(11,11,12,0.45);
+  --muted-dark: rgba(255,255,255,0.45);
+
+  --green: #19e58a;
+  --red: #ff4d4f;
+  --blue: # #3b82f6;
+
+  --radius-xl: 30px;
+  --radius-lg: 22px;
+  --radius-md: 16px;
+
+  --blur-strong: blur(28px);
+  --blur-soft: blur(18px);
+
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* =========================================================
+   BODY
+   ========================================================= */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  background: radial-gradient(1200px 600px at 50% -200px, #ffffff, var(--bg-light));
+  color: var(--text-light);
+  transition: background .8s var(--ease), color .8s var(--ease);
+  overflow: hidden;
+}
+
+/* =========================================================
+   APP WRAPPER
+   ========================================================= */
+
+.app {
+  width: 100%;
+  max-width: 430px;
+  height: 100vh;
+  margin: 0 auto;
+  padding: 18px;
+  padding-bottom: 120px;
+  position: relative;
+}
+
+/* =========================================================
+   TOP HEADER
+   ========================================================= */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.brand {
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  font-size: 13px;
+  opacity: .6;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(25,229,138,.8);
+}
+
+/* =========================================================
+   HERO CARD
+   ========================================================= */
+
+.hero {
+  background: var(--surface-light);
+  border-radius: var(--radius-xl);
+  padding: 30px 26px;
+  position: relative;
+  overflow: hidden;
+  transition: background .8s var(--ease), transform .6s var(--ease);
+}
+
+/* subtle light noise */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 10%, rgba(255,255,255,.6), transparent 40%),
+              radial-gradient(circle at 80% 0%, rgba(255,255,255,.4), transparent 45%);
+  opacity: .6;
+  pointer-events: none;
+}
+
+.hero-balance {
+  font-size: 48px;
+  font-weight: 500;
+  letter-spacing: -0.8px;
+  color: var(--green);
+}
+
+.hero-caption {
+  margin-top: 10px;
+  font-size: 15px;
+  color: var(--muted-light);
+}
+
+/* =========================================================
+   SOFT DIVIDER
+   ========================================================= */
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,.08), transparent);
+  margin: 26px 0;
+}
+
+/* =========================================================
+   METRICS GRID
+   ========================================================= */
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.metric {
+  background: rgba(0,0,0,.03);
+  border-radius: var(--radius-md);
+  padding: 14px 12px;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: var(--muted-light);
+}
+
+.metric-value {
+  margin-top: 6px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* =========================================================
+   FLOATING PANELS
+   ========================================================= */
+
+.panel {
+  margin-top: 18px;
+  background: var(--surface-light);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  transition: background .8s var(--ease);
+}
+
+.panel-title {
+  font-size: 13px;
+  opacity: .6;
+}
+
+.panel-content {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.nav {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 36px);
+  max-width: 400px;
+  height: 60px;
+  background: rgba(255,255,255,.85);
+  backdrop-filter: var(--blur-soft);
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  transition: background .8s var(--ease);
+}
+
+.nav button {
+  background: none;
+  border: none;
+  font-size: 14px;
+  padding: 8px 18px;
+  border-radius: 20px;
+  color: rgba(0,0,0,.45);
+  transition: all .3s var(--ease);
+}
+
+.nav button.active {
+  background: rgba(0,0,0,.08);
+  color: #000;
+}
+
+/* =========================================================
+   MISSED MODE (DARK EMOTIONAL STATE)
+   ========================================================= */
+
+body.missed {
+  background: radial-gradient(1200px 600px at 50% -200px, #1a1d24, var(--bg-dark));
+  color: var(--text-dark);
+}
+
+body.missed .hero,
+body.missed .panel {
+  background: var(--surface-dark);
+  backdrop-filter: var(--blur-strong);
+}
+
+body.missed .hero-balance {
+  color: var(--red);
+}
+
+body.missed .hero-caption,
+body.missed .metric-label,
+body.missed .panel-title {
+  color: var(--muted-dark);
+}
+
+body.missed .nav {
+  background: rgba(15,16,20,.85);
+}
+
+body.missed .nav button {
+  color: rgba(255,255,255,.45);
+}
+
+body.missed .nav button.active {
+  background: rgba(255,255,255,.14);
+  color: #fff;
+}
+
+/* =========================================================
+   FADE MOTION
+   ========================================================= */
+
+.fade-in {
+  animation: fade .8s var(--ease) both;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app fade-in">
+
+  <div class="header">
+    <div class="brand">MISSED</div>
+    <div class="status-dot"></div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-balance" id="balance">+12 480</div>
+    <div class="hero-caption" id="caption">Consistency compounds silently.</div>
+
+    <div class="divider"></div>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-label">Trades</div>
+        <div class="metric-value">48</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Accuracy</div>
+        <div class="metric-value">61%</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Days</div>
+        <div class="metric-value">14</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Insight</div>
+    <div class="panel-content" id="insight">
+      You avoided emotional trades this week.
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Behavior</div>
+    <div class="panel-content">
+      Risk exposure decreased by 12%.
+    </div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button class="active" onclick="setProfit()">Profit</button>
+  <button onclick="setMissed()">Missed</button>
+  <button onclick="setHistory()">History</button>
+</div>
+
+<script>
+const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
+
+function setProfit() {
+  document.body.classList.remove('missed');
+  document.getElementById('balance').innerText = '+12 480';
+  document.getElementById('caption').innerText = 'Consistency compounds silently.';
+  document.getElementById('insight').innerText =
+    'You avoided emotional trades this week.';
+}
+
+function setMissed() {
+  document.body.classList.add('missed');
+  document.getElementById('balance').innerText = '-3 240';
+  document.getElementById('caption').innerText =
+    'Impulse is the most expensive habit.';
+  document.getElementById('insight').innerText =
+    'Most losses came from late entries.';
+}
+
+function setHistory() {
+  alert('History view — next step.');
+}
+</script>
+
+</body>
+</html>
